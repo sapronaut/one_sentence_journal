@@ -10,7 +10,7 @@ import {
   subMonths,
   addMonths,
 } from 'date-fns'
-import { ChevronLeft, ChevronRight, BookOpen, Heart } from 'lucide-react'
+import { ChevronLeft, ChevronRight, BookOpen } from 'lucide-react'
 import type { Entry, User } from './types'
 import { STORAGE_KEY, USER_KEY } from './types'
 
@@ -68,7 +68,6 @@ function calculateStreak(entries: Record<string, Entry>): number {
   return streak
 }
 
-// Gentle daily prompts (changes every day)
 const PROMPTS = [
   "What stayed with you today?",
   "What made you pause for a moment?",
@@ -89,16 +88,14 @@ function getDailyPrompt() {
   return PROMPTS[dayOfYear % PROMPTS.length]
 }
 
-// Soft mood colors
 const MOODS = [
-  { id: 'calm', color: 'bg-sky-300', label: 'Calm' },
-  { id: 'warm', color: 'bg-amber-300', label: 'Warm' },
-  { id: 'soft', color: 'bg-rose-300', label: 'Soft' },
-  { id: 'clear', color: 'bg-emerald-300', label: 'Clear' },
-  { id: 'deep', color: 'bg-indigo-300', label: 'Deep' },
+  { id: 'calm', color: 'bg-sky-400', label: 'Calm' },
+  { id: 'warm', color: 'bg-amber-400', label: 'Warm' },
+  { id: 'soft', color: 'bg-rose-400', label: 'Soft' },
+  { id: 'clear', color: 'bg-emerald-400', label: 'Clear' },
+  { id: 'deep', color: 'bg-indigo-400', label: 'Deep' },
 ]
 
-// Tiny soft save sound using Web Audio
 function playSaveSound() {
   try {
     const ctx = new (window.AudioContext || (window as any).webkitAudioContext)()
@@ -116,9 +113,7 @@ function playSaveSound() {
 
     osc.start(ctx.currentTime)
     osc.stop(ctx.currentTime + 0.3)
-  } catch {
-    // ignore if audio not allowed
-  }
+  } catch {}
 }
 
 // ---------- Main Component ----------
@@ -145,7 +140,6 @@ export default function App() {
     setSelectedMood(entry?.mood)
   }, [selectedDate, entries])
 
-  // Streak celebration
   useEffect(() => {
     const streak = calculateStreak(entries)
     const milestones = [3, 7, 14, 21, 30, 60, 100]
@@ -222,19 +216,19 @@ export default function App() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -12 }}
           transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-          className="flex min-h-screen items-center justify-center bg-stone-50 px-6"
+          className="flex min-h-screen items-center justify-center bg-[#0c0c0c] px-6"
         >
           <div className="w-full max-w-md text-center">
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.1, duration: 0.4 }}
-              className="mx-auto mb-8 flex h-16 w-16 items-center justify-center rounded-3xl bg-stone-800 text-stone-50 shadow-lg"
+              className="mx-auto mb-8 flex h-16 w-16 items-center justify-center rounded-3xl bg-stone-100 text-stone-900 shadow-lg"
             >
               <BookOpen className="h-8 w-8" />
             </motion.div>
 
-            <h1 className="mb-3 text-3xl font-semibold tracking-tight text-stone-900">
+            <h1 className="mb-3 text-3xl font-semibold tracking-tight text-stone-100">
               One Sentence
             </h1>
             <p className="mb-10 text-stone-500">A quiet place for one thought a day.</p>
@@ -245,14 +239,14 @@ export default function App() {
               onChange={e => setNameInput(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleSaveName()}
               placeholder="What should we call you?"
-              className="mb-6 w-full rounded-2xl border border-stone-300 bg-white px-5 py-4 text-center text-lg text-stone-900 placeholder:text-stone-400 focus:border-stone-500 focus:outline-none"
+              className="mb-6 w-full rounded-2xl border border-stone-800 bg-[#161616] px-5 py-4 text-center text-lg text-stone-100 placeholder:text-stone-600 focus:border-stone-600 focus:outline-none"
               autoFocus
             />
 
             <button
               onClick={handleSaveName}
               disabled={!nameInput.trim()}
-              className="w-full rounded-2xl bg-stone-900 py-4 text-lg font-medium text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-40"
+              className="w-full rounded-2xl bg-stone-100 py-4 text-lg font-medium text-stone-900 transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
             >
               Begin
             </button>
@@ -266,7 +260,7 @@ export default function App() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="min-h-screen bg-stone-50"
+          className="min-h-screen bg-[#0c0c0c] text-stone-100"
         >
           {/* Celebration toast */}
           <AnimatePresence>
@@ -275,7 +269,7 @@ export default function App() {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className="fixed left-1/2 top-6 z-50 -translate-x-1/2 rounded-full bg-stone-900 px-5 py-2.5 text-sm text-white shadow-lg"
+                className="fixed left-1/2 top-6 z-50 -translate-x-1/2 rounded-full bg-stone-100 px-5 py-2.5 text-sm text-stone-900 shadow-lg"
               >
                 {celebration}
               </motion.div>
@@ -283,14 +277,14 @@ export default function App() {
           </AnimatePresence>
 
           {/* Header */}
-          <header className="border-b border-stone-200/60 bg-stone-50/80 backdrop-blur-xl">
+          <header className="border-b border-stone-800/80 bg-[#0c0c0c]/80 backdrop-blur-xl">
             <div className="mx-auto flex max-w-2xl items-center justify-between px-6 py-5">
               <div className="flex items-center gap-4">
-                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-stone-800 text-lg font-medium text-stone-50">
+                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-stone-100 text-lg font-medium text-stone-900">
                   {user.name.charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-stone-900">
+                  <p className="text-sm font-medium text-stone-100">
                     {getGreeting(user.name)}
                   </p>
                   <p className="text-xs text-stone-500">
@@ -312,7 +306,7 @@ export default function App() {
               </p>
 
               {/* Daily Prompt */}
-              <p className="mb-4 text-sm italic text-stone-400">{prompt}</p>
+              <p className="mb-4 text-sm italic text-stone-600">{prompt}</p>
 
               <textarea
                 ref={inputRef}
@@ -322,13 +316,13 @@ export default function App() {
                 onKeyDown={handleKeyDown}
                 placeholder="Write one sentence…"
                 rows={4}
-                className="w-full resize-none rounded-3xl border border-stone-200 bg-white px-6 py-5 text-xl leading-relaxed text-stone-800 placeholder:text-stone-400 focus:border-stone-400 focus:outline-none"
+                className="w-full resize-none rounded-3xl border border-stone-800 bg-[#161616] px-6 py-5 text-xl leading-relaxed text-stone-100 placeholder:text-stone-600 focus:border-stone-600 focus:outline-none"
                 style={{ fontFamily: 'Georgia, serif' }}
               />
 
               {/* Mood dots */}
               <div className="mt-4 flex items-center gap-3">
-                <span className="text-xs text-stone-400">Mood</span>
+                <span className="text-xs text-stone-600">Mood</span>
                 {MOODS.map(mood => (
                   <button
                     key={mood.id}
@@ -338,14 +332,14 @@ export default function App() {
                     title={mood.label}
                     className={`h-5 w-5 rounded-full transition-all ${mood.color} ${
                       selectedMood === mood.id
-                        ? 'scale-125 ring-2 ring-stone-400 ring-offset-2'
+                        ? 'scale-125 ring-2 ring-stone-500 ring-offset-2 ring-offset-[#0c0c0c]'
                         : 'opacity-70 hover:opacity-100'
                     }`}
                   />
                 ))}
               </div>
 
-              <p className="mt-3 text-right text-xs text-stone-400">
+              <p className="mt-3 text-right text-xs text-stone-600">
                 Enter to save · {draft.trim() ? 'Saved' : 'Waiting for your words'}
               </p>
             </section>
@@ -359,20 +353,20 @@ export default function App() {
                 <div className="flex gap-1">
                   <button
                     onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
-                    className="rounded-lg p-1.5 text-stone-500 hover:bg-stone-200"
+                    className="rounded-lg p-1.5 text-stone-500 hover:bg-stone-900"
                   >
                     <ChevronLeft className="h-4 w-4" />
                   </button>
                   <button
                     onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
-                    className="rounded-lg p-1.5 text-stone-500 hover:bg-stone-200"
+                    className="rounded-lg p-1.5 text-stone-500 hover:bg-stone-900"
                   >
                     <ChevronRight className="h-4 w-4" />
                   </button>
                 </div>
               </div>
 
-              <div className="mb-2 grid grid-cols-7 gap-1.5 text-center text-xs text-stone-400">
+              <div className="mb-2 grid grid-cols-7 gap-1.5 text-center text-xs text-stone-600">
                 {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(d => (
                   <div key={d} className="py-1">
                     {d}
@@ -401,12 +395,12 @@ export default function App() {
                         relative flex aspect-square items-center justify-center rounded-2xl text-sm font-medium transition-all
                         ${
                           selected
-                            ? 'bg-stone-900 text-white shadow-md'
+                            ? 'bg-stone-100 text-stone-900 shadow-md'
                             : filled
-                            ? 'bg-stone-300/80 text-stone-800'
-                            : 'text-stone-400 hover:bg-stone-200/70'
+                            ? 'bg-stone-800 text-stone-200'
+                            : 'text-stone-600 hover:bg-stone-900'
                         }
-                        ${today && !selected ? 'ring-2 ring-stone-400/60 ring-offset-2 ring-offset-stone-50' : ''}
+                        ${today && !selected ? 'ring-2 ring-stone-600 ring-offset-2 ring-offset-[#0c0c0c]' : ''}
                       `}
                     >
                       {format(day, 'd')}
