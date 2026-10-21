@@ -1,4 +1,4 @@
-# one sentence
+# one sentence journal
 
 a quiet place for one thought a day.
 
@@ -28,3 +28,5 @@ src/
   App.tsx          - main journal + onboarding
   types.ts         - entry & user types
   index.css        - base styles
+
+  Vercel deployment - https://one-sentence-journal-wt63.vercel.app/
