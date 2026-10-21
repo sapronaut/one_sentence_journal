@@ -201,7 +201,7 @@ export default function App() {
     end: endOfMonth(currentMonth),
   })
 
-  const hasEntry = (date: Date) => !!entries[format(date, 'yyyy-MM-dd')]
+  
   const streak = calculateStreak(entries)
   const totalEntries = Object.keys(entries).length
   const prompt = getDailyPrompt()
