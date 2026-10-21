@@ -1,6 +1,7 @@
 export interface Entry {
   date: string // YYYY-MM-DD
   sentence: string
+  mood?: string // optional color
   createdAt: number
 }
 
